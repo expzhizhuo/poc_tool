@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: poc-tools
+Version: 1.0.2
+Summary: python Poc 还原原始http请求数据包以及常用工具集成化封装
+Author: zhizhuo
+Author-email: zhizhuoshuma@163.com
+License: MIT
+Requires-Python: >=3.8
+License-File: LICENSE.txt
