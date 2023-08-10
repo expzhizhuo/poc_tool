@@ -8,7 +8,7 @@ setup(
     description="python Poc 还原原始http请求数据包以及常用工具集成化封装",
     author="zhizhuo",
     author_email="zhizhuoshuma@163.com",
-    url='https://github.com/zhizhuoshuma/poc-tool',
+    url='https://github.com/zhizhuoshuma/poc_tool',
     packages=find_packages(),
     install_requires=[
         "requests",
