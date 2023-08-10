@@ -3,4 +3,4 @@
 dist/
 build/
 venv/
-poc_tool.egg-info
+poc_tool.egg-info/
