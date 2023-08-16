@@ -161,7 +161,7 @@ class Tools:
                 body = res.request.body
         else:
             body = ''
-        req = f"{res.request.method} {res.request.path_url} {self.get_http_version(res)}\nhost: {host}\n{headers}\n{body}"
+        req = f"{res.request.method} {res.request.path_url} {self.get_http_version(res)}\nHost: {host}\n{headers}\n{body}"
         return req
 
     def get_res(self, res):
