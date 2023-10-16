@@ -88,51 +88,59 @@ class Tools:
         """
         return self._ua_list[random.randint(0, len(self._ua_list) - 1)]
 
-    def get_random_str(self, len: int = 1) -> str:
+    @staticmethod
+    def get_random_str(len: int = 1) -> str:
         """
         生成指定长度的随机字符串，默认长度是1
         """
         letters = string.ascii_letters
         return ''.join(random.choice(letters) for _ in range(len))
 
-    def get_random_num(self, len: int = 1) -> int:
+    @staticmethod
+    def get_random_num(len: int = 1) -> int:
         """
         生成指定长度的随机数字，默认长度是1
         """
         return random.randint(10 ** (len - 1), (10 ** len) - 1)
 
-    def get_random_ip(self):
+    @staticmethod
+    def get_random_ip():
         """
         生成随机ip地址
         """
         ip = socket.inet_ntoa(struct.pack('>I', random.randint(1, 0xffffffff)))
         return ip
 
-    def url_encode(self, url_string, num: int = 1):
+    @staticmethod
+    def url_encode(url_string):
         """
         只针对特殊字符进行url编码
         """
         return quote(url_string)
 
-    def url_encode_all(self, url_string, num: int = 1) -> str:
+    @staticmethod
+    def url_encode_all(url_string, num: int = 1) -> str:
         """
         全url编码，num编码次数
         """
-        for i in range(num):
+        encode_string = ""
+        for _ in range(num):
             encode_string = "".join(hex(ord(char)).replace("0x", "%") for char in url_string)
             url_string = encode_string
         return encode_string
 
-    def url_decode(self, url_string, num: int = 1):
+    @staticmethod
+    def url_decode(url_string, num: int = 1):
         """
         url编码解密
         """
         str_decode = url_string
-        for i in range(num):
+        for _ in range(num):
             str_decode = unquote(str_decode)
         return str_decode
 
-    def get_http_version(self, res):
+    @staticmethod
+    def get_http_version(res):
         """
         获取相应或者请求的HTTP协议的版本信息
         """
@@ -146,43 +154,73 @@ class Tools:
         """
         获取请求信息，拼接生成请求数据包
         """
-        host = urlparse(res.url).netloc
-        headers = ''.join(header + '\n' for header in ["{}: {}".format(
-            key, res.request.headers[key]) for key in res.request.headers.keys()])
-        if res.request.body is not None:
-            if type(res.request.body) == bytes:
-                try:
-                    body = res.request.body.decode()
-                except:
+        try:
+            if res.request.body is not None:
+                if type(res.request.body) == bytes:
+                    # 转换成utf-8 编码，如果不能解码的直接略过
+                    body = res.request.body.decode('utf-8', 'ignore')
+                elif type(res.request.body) == dict:
+                    body = json.dumps(res.request.body)
+                else:
                     body = res.request.body
-            if type(res.request.body) == dict:
-                body = json.dumps(res.request.body)
             else:
-                body = res.request.body
-        else:
-            body = ''
-        req = f"{res.request.method} {res.request.path_url} {self.get_http_version(res)}\nHost: {host}\n{headers}\n{body}"
+                body = ''
+            req = self.get_req_header(res) + body
+        except Exception:
+            req = None
+        return req
+
+    def get_req_header(self, res):
+        """
+        获取请求头
+        :param res:
+        :return:
+        """
+        try:
+            host = urlparse(res.url).netloc
+            headers = ''.join(header + '\n' for header in ["{}: {}".format(
+                key, res.request.headers[key]) for key in res.request.headers.keys()])
+            req = f"{res.request.method} {res.request.path_url} {self.get_http_version(res)}\nHost: {host}\n{headers}\n"
+        except Exception:
+            req = None
         return req
 
     def get_res(self, res):
         """
-        获取相应信息，拼接请求数据包
+        获取响应信息，拼接请求数据包
         """
-        res.encoding = res.apparent_encoding
-        res_headers = ''
-        for key in res.headers:
-            res_headers += key + ': ' + res.headers[key] + '\n'
-        response = f"{self.get_http_version(res)} {res.status_code} {res.reason}\n{res_headers}\n{res.text}"
+        try:
+            response = self.get_res_header(res) + res.text
+        except Exception:
+            response = None
         return response
 
-    def base64_encode(self, data):
+    def get_res_header(self, res):
+        """
+        获取响应头
+        :param res:
+        :return:
+        """
+        try:
+            res.encoding = res.apparent_encoding
+            res_headers = ''
+            for key in res.headers:
+                res_headers += key + ': ' + res.headers[key] + '\n'
+            response = f"{self.get_http_version(res)} {res.status_code} {res.reason}\n{res_headers}\n"
+        except Exception:
+            response = None
+        return response
+
+    @staticmethod
+    def base64_encode(data):
         """
         base64编码
         """
         base64_endata = base64.b64encode(str(data).encode()).decode()
         return base64_endata
 
-    def base64_decode(self, data):
+    @staticmethod
+    def base64_decode(data):
         """
         base64解密
         """
