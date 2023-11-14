@@ -58,11 +58,11 @@ class LoggingLevel:
     DEBUG = 5
 
 
-logging.addLevelName(LoggingLevel.SUCCESS, color.cyan("[SUCCESS]"))
-logging.addLevelName(LoggingLevel.INFO, "[INFO]")
-logging.addLevelName(LoggingLevel.ERROR, color.red("[ERROR]"))
-logging.addLevelName(LoggingLevel.WARNING, color.yellow("[WARNING]"))
-logging.addLevelName(LoggingLevel.DEBUG, color.blue("[DEBUG]"))
+logging.addLevelName(LoggingLevel.SUCCESS, color.cyan("SUCCESS"))
+logging.addLevelName(LoggingLevel.INFO, "INFO")
+logging.addLevelName(LoggingLevel.ERROR, color.red("ERROR"))
+logging.addLevelName(LoggingLevel.WARNING, color.yellow("WARNING"))
+logging.addLevelName(LoggingLevel.DEBUG, color.blue("DEBUG"))
 
 # 初始化日志
 LOGGER = logging.getLogger()
