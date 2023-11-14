@@ -70,7 +70,7 @@ tools.url_encode_all()
 ```shell
 from poc_tool.log import logger, LoggingLevel, LOGGER
 
-# 设置日志等级，可以设置info，error，debug，waring，success
+# 设置日志等级，可以设置info，error，debug，warning，success
 LOGGER.setLevel(LoggingLevel.INFO)
 
 # 使用
