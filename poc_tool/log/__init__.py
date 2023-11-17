@@ -5,4 +5,4 @@
 @Author  ：zhizhuo
 @Date    ：2023/11/14 09:45 
 """
-from .logger import logger, LoggingLevel, LOGGER
+from .logger import log, LoggingLevel, LOGGER

@@ -51,11 +51,11 @@ color = Colored()
 
 
 class LoggingLevel:
-    SUCCESS = 9
-    INFO = 8
-    ERROR = 7
-    WARNING = 6
-    DEBUG = 5
+    SUCCESS = 50
+    INFO = 49
+    ERROR = 48
+    WARNING = 47
+    DEBUG = 46
 
 
 logging.addLevelName(LoggingLevel.SUCCESS, color.cyan("SUCCESS"))
@@ -74,12 +74,10 @@ formatter = logging.Formatter(
 LOGGER_HANDLER = logging.StreamHandler(sys.stdout)
 LOGGER_HANDLER.setFormatter(formatter)
 LOGGER.addHandler(LOGGER_HANDLER)
+LOGGER.setLevel(LoggingLevel.INFO)
 
 
 class MY_LOGGER:
-    def __init__(self):
-        LOGGER.setLevel(LoggingLevel.DEBUG)
-
     @staticmethod
     def info(msg: str):
         return LOGGER.log(LoggingLevel.INFO, msg)
@@ -101,4 +99,4 @@ class MY_LOGGER:
         return LOGGER.log(LoggingLevel.SUCCESS, msg)
 
 
-logger = MY_LOGGER()
+log = MY_LOGGER()

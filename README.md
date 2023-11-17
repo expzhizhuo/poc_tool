@@ -68,14 +68,15 @@ tools.url_encode_all()
 默认日志输出是DEBUG模式，也就是所有信息都输出
 
 ```shell
-from poc_tool.log import logger, LoggingLevel, LOGGER
+from poc_tool.log import log, LoggingLevel, LOGGER
 
 # 设置日志等级，可以设置info，error，debug，warning，success
 LOGGER.setLevel(LoggingLevel.INFO)
 
 # 使用
-logger.info("zhizhuo")
-logger.error("zhizhuo")
-logger.warning("zhizhuo")
-logger.debug("zhizhuo")
+log.info("zhizhuo")
+log.success("zhizhuo")
+log.error("zhizhuo")
+log.warning("zhizhuo")
+log.debug("zhizhuo")
 ```
