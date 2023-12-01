@@ -6,13 +6,16 @@
 @Date    ：2023/7/25 15:11
 """
 
+import base64
 import json
 import random
+import re
 import socket
+import string
 import struct
 from urllib.parse import urlparse, quote, unquote
-import base64
-import string
+
+import requests.models
 
 UA = '''
 Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; zh-cn) Opera 8.65
@@ -82,9 +85,24 @@ class Tools:
 
         self._ua_list = [u for u in UA.split('\n') if u]
 
-    def get_random_ua(self):
+    @staticmethod
+    def get_url_format(url: string) -> str:
+        """
+        url格式化，格式成http(s)://example.com
+        :param url: IP地址
+        :return: url格式化地址
+        """
+        if not url.startswith(('http://', 'https://')):
+            url = 'http://' + str(url)
+        domain = re.findall('://(.*?)/', url)
+        if domain:
+            url = 'http://' + domain[0]
+        return url
+
+    def get_random_ua(self) -> str:
         """
         获取随机的ua头
+        :return: 随机ua头
         """
         return self._ua_list[random.randint(0, len(self._ua_list) - 1)]
 
@@ -92,6 +110,8 @@ class Tools:
     def get_random_str(len: int = 1) -> str:
         """
         生成指定长度的随机字符串，默认长度是1
+        :param len: 生成字符串长度
+        :return: 随机字符串
         """
         letters = string.ascii_letters
         return ''.join(random.choice(letters) for _ in range(len))
@@ -100,28 +120,36 @@ class Tools:
     def get_random_num(len: int = 1) -> int:
         """
         生成指定长度的随机数字，默认长度是1
+        :param len: 生成随机数字长度
+        :return: 随机数字
         """
         return random.randint(10 ** (len - 1), (10 ** len) - 1)
 
     @staticmethod
-    def get_random_ip():
+    def get_random_ip() -> str:
         """
         生成随机ip地址
+        :return: ip地址
         """
         ip = socket.inet_ntoa(struct.pack('>I', random.randint(1, 0xffffffff)))
         return ip
 
     @staticmethod
-    def url_encode(url_string):
+    def url_encode(url_string: str) -> str:
         """
         只针对特殊字符进行url编码
+        :param url_string: 待url编码数据
+        :return: url编码后的字符串
         """
         return quote(url_string)
 
     @staticmethod
-    def url_encode_all(url_string, num: int = 1) -> str:
+    def url_encode_all(url_string: str, num: int = 1) -> str:
         """
         全url编码，num编码次数
+        :param url_string: 待url编码数据
+        :param num: 编码次数
+        :return: url编码后的字符串
         """
         encode_string = ""
         for _ in range(num):
@@ -130,9 +158,12 @@ class Tools:
         return encode_string
 
     @staticmethod
-    def url_decode(url_string, num: int = 1):
+    def url_decode(url_string: str, num: int = 1) -> str:
         """
         url编码解密
+        :param url_string: 待url解密数据
+        :param num: 需要url解密次数
+        :return: url解密结果
         """
         str_decode = url_string
         for _ in range(num):
@@ -140,9 +171,11 @@ class Tools:
         return str_decode
 
     @staticmethod
-    def get_http_version(res):
+    def get_http_version(res: requests.models.Response) -> str:
         """
         获取相应或者请求的HTTP协议的版本信息
+        :param res: 请求响应对象
+        :return: HTTP协议版本
         """
         if res.raw.version == 20:
             version = "HTTP/2.0"
@@ -150,9 +183,11 @@ class Tools:
             version = "HTTP/1.1"
         return version
 
-    def get_req(self, res):
+    def get_req(self, res: requests.models.Response) -> str:
         """
-        获取请求信息，拼接生成请求数据包
+        获取请求数据包
+        :param res: 请求响应对象Response
+        :return: 请求数据包
         """
         try:
             if res.request.body is not None:
@@ -170,11 +205,11 @@ class Tools:
             req = None
         return req
 
-    def get_req_header(self, res):
+    def get_req_header(self, res: requests.models.Response) -> str:
         """
         获取请求头
-        :param res:
-        :return:
+        :param res: 请求响应对象Response
+        :return: 请求头
         """
         try:
             host = urlparse(res.url).netloc
@@ -185,9 +220,11 @@ class Tools:
             req = None
         return req
 
-    def get_res(self, res):
+    def get_res(self, res: requests.models.Response) -> str:
         """
-        获取响应信息，拼接请求数据包
+        获取响应数据包
+        :param res: 请求响应对象Response
+        :return: 响应数据包
         """
         try:
             response = self.get_res_header(res) + res.text
@@ -195,11 +232,11 @@ class Tools:
             response = None
         return response
 
-    def get_res_header(self, res):
+    def get_res_header(self, res: requests.models.Response):
         """
         获取响应头
-        :param res:
-        :return:
+        :param res: 请求响应对象Response
+        :return: 响应头
         """
         try:
             res.encoding = res.apparent_encoding
@@ -212,26 +249,30 @@ class Tools:
         return response
 
     @staticmethod
-    def base64_encode(data):
+    def base64_encode(data) -> str:
         """
         base64编码
+        :param data: 待base64加密数据
+        :return: base64加密数据
         """
         base64_endata = base64.b64encode(str(data).encode()).decode()
         return base64_endata
 
     @staticmethod
-    def base64_decode(data):
+    def base64_decode(data) -> str:
         """
         base64解密
+        :param data: 待base64解密数据
+        :return: base64解密数据
         """
         base64_dedata = base64.b64decode(str(data)).decode()
         return base64_dedata
 
-    def get_all_requests(self, res):
+    def get_all_requests(self, res: requests.models.Response) -> dict:
         """
         获取原始请求数据包，相应数据包
-        :param res:object
-        :return:对象{}
+        :param res: 请求响应对象Response
+        :return: 请求数据包和响应数据包
         """
         return {"request": self.get_req(res), "response": self.get_res(res)}
 

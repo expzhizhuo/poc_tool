@@ -61,6 +61,9 @@ tools.url_decode()
 
 # url全编码，传入字符串
 tools.url_encode_all()
+
+# url地址格式化，传入url或者IP地址，例如：'127.0.0.1:8988'，‘https://127.0.0.1:8899/api/v1’
+tools.get_url_format()
 ```
 
 ### 日志输出类logger使用

@@ -1,5 +1,6 @@
-import os
 import io
+import os
+
 from setuptools import setup, find_packages
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
@@ -9,7 +10,7 @@ with io.open(os.path.join(current_dir, "README.md"), encoding="utf-8") as fd:
 setup(
     name="poc_tool",
     license='MIT',
-    version="1.1.5",
+    version="1.1.6",
     long_description=desc,
     long_description_content_type="text/markdown",
     description="Python Poc 还原原始http请求数据包以及常用工具集成化封装",
