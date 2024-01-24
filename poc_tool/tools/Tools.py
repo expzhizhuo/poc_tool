@@ -97,6 +97,12 @@ class Tools:
         domain = re.findall('://(.*?)/', url)
         if domain:
             url = 'http://' + domain[0]
+        if str(url.split(":")[-1]) == '80' or url.startswith("http://"):
+            url = 'http://' + url.split(":")[0]
+        elif str(url.split(":")[-1]) == '443' or url.startswith("https://"):
+            url = 'https://' + url.split(":")[0]
+        else:
+            url = 'http://' + url
         return url
 
     def get_random_ua(self) -> str:
