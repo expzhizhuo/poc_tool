@@ -14,7 +14,6 @@ import socket
 import string
 import struct
 from urllib.parse import urlparse, quote, unquote
-
 import requests.models
 
 UA = '''
@@ -85,25 +84,63 @@ class Tools:
 
         self._ua_list = [u for u in UA.split('\n') if u]
 
-    @staticmethod
-    def get_url_format(url: string) -> str:
+    def get_url_format(self, url: string) -> str:
         """
         url格式化，格式成http(s)://example.com
         :param url: IP地址
         :return: url格式化地址
         """
-        if not url.startswith(('http://', 'https://')):
-            url = 'http://' + str(url)
-        domain = re.findall('://(.*?)/', url)
-        if domain:
-            url = 'http://' + domain[0]
-        if str(url.split(":")[-1]) == '80' or url.startswith("http://"):
-            url = 'http://' + url.split(":")[0]
-        elif str(url.split(":")[-1]) == '443' or url.startswith("https://"):
-            url = 'https://' + url.split(":")[0]
-        else:
-            url = 'http://' + url
+        url = url.rstrip("/") + "/"
+        url = f"http://{url}" if not url.startswith(('http://', 'https://')) else url
+        domain_match = re.search('://(.*?)/', url)
+        if domain_match:
+            domain = domain_match.group(1)
+            port = domain.split(':')[-1]
+            domain_without_port = domain.replace(f':{port}', '')
+            if 0 < len(port) < 6 and self.verify_ipv6(domain_without_port):
+                domain = f"[{domain_without_port}]:{port}"
+            elif self.verify_ipv6(domain):
+                domain = f"[{domain}]"
+            protocol = 'http' if port != '443' else 'https'
+            domain_part = domain_without_port if port in ('80', '443') else domain
+            url = f"{protocol}://{domain_part}"
         return url
+
+    def verify_ip(self, ip: str) -> bool:
+        """
+        验证是否是ip地址
+        :param ip:ip
+        :return:True or False
+        """
+        if self.verify_ipv4(ip) or self.verify_ipv6(ip):
+            return True
+        return False
+
+    @staticmethod
+    def verify_ipv4(ip: str) -> bool:
+        """
+        验证是否是ipv4地址
+        :param ip:ip
+        :return:True or False
+        """
+        try:
+            socket.inet_pton(socket.AF_INET, ip)
+        except socket.error:
+            return False
+        return True
+
+    @staticmethod
+    def verify_ipv6(ip: str) -> bool:
+        """
+        验证是否是ipv6地址
+        :param ip:ip
+        :return:True or False
+        """
+        try:
+            socket.inet_pton(socket.AF_INET6, ip)
+        except socket.error:
+            return False
+        return True
 
     def get_random_ua(self) -> str:
         """

@@ -15,7 +15,7 @@ pip install poc-tool
 ### 工具类tools使用
 
 ```shell
-from poc_tool.tools import tools
+from poc_tool import tools
 
 # 获取请求和响应数据包，传入response
 tools.get_all_requests()
@@ -64,6 +64,15 @@ tools.url_encode_all()
 
 # url地址格式化，传入url或者IP地址，例如：'127.0.0.1:8988'，‘https://127.0.0.1:8899/api/v1’
 tools.get_url_format()
+
+# 验证是否是ip
+tools.tools.verify_ip()
+
+# 验证是否是ipv4 ip
+tools.tools.verify_ipv4()
+
+# 验证是否是ipv6 ip
+tools.tools.verify_ipv6()
 ```
 
 ### 日志输出类logger使用
@@ -71,7 +80,7 @@ tools.get_url_format()
 默认日志输出是INFO模式，如果需要所有信息都输出请设置成DEBUG模式
 
 ```shell
-from poc_tool.log import log, LoggingLevel, LOGGER
+from poc_tool import log, LoggingLevel, LOGGER
 
 # 设置日志等级，可以设置info，error，debug，warning，success
 LOGGER.setLevel(LoggingLevel.INFO)
