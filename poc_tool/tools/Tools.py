@@ -14,6 +14,7 @@ import socket
 import string
 import struct
 from urllib.parse import urlparse, quote, unquote
+
 import requests.models
 
 UA = '''
@@ -84,7 +85,7 @@ class Tools:
 
         self._ua_list = [u for u in UA.split('\n') if u]
 
-    def get_url_format(self, url: string) -> str:
+    def get_url_format(self, url: str) -> str:
         """
         url格式化，格式成http(s)://example.com
         :param url: IP地址
@@ -275,7 +276,7 @@ class Tools:
             response = None
         return response
 
-    def get_res_header(self, res: requests.models.Response):
+    def get_res_header(self, res: requests.models.Response) -> str:
         """
         获取响应头
         :param res: 请求响应对象Response

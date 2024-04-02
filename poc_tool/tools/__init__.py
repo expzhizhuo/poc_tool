@@ -5,4 +5,5 @@
 @Author  ：zhizhuo
 @Date    ：2023/7/25 15:10 
 """
+from .HexDump import hex_dump
 from .Tools import tools

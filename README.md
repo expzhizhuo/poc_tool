@@ -92,3 +92,18 @@ log.error("zhizhuo")
 log.warning("zhizhuo")
 log.debug("zhizhuo")
 ```
+
+### 文件hex编码查看，类似于Linux中的xxd命令
+
+```python
+from poc_tool import hex_dump
+
+
+# 或者使用 from poc_tool.tools import hex_dump引入
+# 参数说明，file_path文件路径，bytes_per_line每行的字节大小，默认是16
+# lines获取多少行数据，默认是全部，可以自己定义传入
+
+def hex_test():
+    hex_data = hex_dump(file_path="../poc编写规则.zip", lines=10)
+    print(hex_data)
+```
