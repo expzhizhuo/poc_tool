@@ -19,7 +19,7 @@ def log_test():
 
 
 def hex_test():
-    hex_data = hex_dump(file_path="../poc编写规则.zip", lines=10)
+    hex_data = hex_dump(file_path="../../poc编写规则.zip", lines=10)
     print(hex_data)
 
 

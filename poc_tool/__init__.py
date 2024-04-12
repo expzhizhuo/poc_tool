@@ -5,6 +5,4 @@
 @Author  ：zhizhuo
 @Date    ：2023/7/25 15:10 
 """
-
-from .log.logger import log, LOGGER, LoggingLevel
 from .tools import tools, hex_dump

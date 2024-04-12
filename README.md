@@ -80,7 +80,7 @@ tools.tools.verify_ipv6()
 默认日志输出是INFO模式，如果需要所有信息都输出请设置成DEBUG模式
 
 ```shell
-from poc_tool import log, LoggingLevel, LOGGER
+from poc_tool.log import log, LoggingLevel, LOGGER
 
 # 设置日志等级，可以设置info，error，debug，warning，success
 LOGGER.setLevel(LoggingLevel.INFO)

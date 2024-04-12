@@ -10,7 +10,7 @@ with io.open(os.path.join(current_dir, "README.md"), encoding="utf-8") as fd:
 setup(
     name="poc_tool",
     license='MIT',
-    version="1.2.0",
+    version="1.2.1",
     long_description=desc,
     long_description_content_type="text/markdown",
     description="Python Poc 还原原始http请求数据包以及常用工具集成化封装类，可以更快帮助您完成POC的书写及调试",
