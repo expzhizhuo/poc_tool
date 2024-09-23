@@ -5,7 +5,7 @@
 @Author  ：zhizhuo
 @Date    ：2024/3/1 13:16 
 """
-from poc_tool import log, LOGGER, LoggingLevel
+from poc_tool.log import log, LOGGER, LoggingLevel
 from poc_tool import tools, hex_dump
 
 
@@ -24,6 +24,8 @@ def hex_test():
 
 
 def main():
+    print(tools.get_random_str_num(10))
+    print(tools.get_random_ua())
     log_test()
     hex_test()
     url = "http://127.0.0.1:80/"

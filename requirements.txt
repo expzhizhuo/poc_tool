@@ -2,3 +2,4 @@ colorama~=0.4.4
 requests~=2.31.0
 tools~=0.1.9
 setuptools~=68.2.2
+fake-useragent~=1.5.1
